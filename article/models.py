@@ -5,6 +5,20 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
 
+class Tag(models.Model):
+    """
+    标签
+    """
+    name = models.CharField(max_length=20, verbose_name="标签")
+
+    class Meta:
+        verbose_name = "标签"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
+
+
 class PublishedManager(models.Manager):
     def get_queryset(self):
         return super(PublishedManager, self).get_queryset().filter(status='published')
@@ -22,6 +36,7 @@ class Post(models.Model):
     title = models.CharField(max_length=250)
     # Django will prevent from multiple posts having the same slug for the same date.
     slug = models.SlugField(max_length=250, unique_for_date='publish_time')
+    tag = models.ManyToManyField(Tag)
     author = models.ForeignKey(User, related_name='blog_posts')
     body = models.TextField()
     publish_time = models.DateTimeField(default=timezone.now)
@@ -37,6 +52,8 @@ class Post(models.Model):
     class Meta:
         # sort results by the publish_time field in descending order by default when we query the database.
         ordering = ('-publish_time', )
+        verbose_name = "文章"
+        verbose_name_plural = verbose_name
 
     def __str__(self):
         return self.title
@@ -64,6 +81,8 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ('created', )
+        verbose_name = "评论"
+        verbose_name_plural = verbose_name
 
     def __str__(self):
         return 'Comment by {} on {}'.format(self.name, self.post)

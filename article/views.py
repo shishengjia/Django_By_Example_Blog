@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic.base import View
 from django.core.mail import send_mail
 
-from .models import Post
+from .models import Post, Tag
 from .forms import EmailPostForm, CommentForm
 
 
@@ -10,8 +10,11 @@ class PostListView(View):
     """
     博客列表页
     """
-    def get(self, request):
+    def get(self, request, tag_name=None):
         posts = Post.published.all()
+        if tag_name:
+            tag = get_object_or_404(Tag, name=tag_name)
+            posts = posts.filter(tag__in=[tag])
         return render(request, 'post_list.html', {'posts': posts})
 
 
