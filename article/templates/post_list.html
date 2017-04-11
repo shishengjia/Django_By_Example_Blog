@@ -10,6 +10,7 @@
         </h2>
         <p class="date">
             Published {{ post.publish_time }} by {{ post.author }}
+            <a href="{{ post.get_absolute_url }}" style="font-size: medium">{{ post.comments.count }}评论</a>
         </p>
         <!--truncates the value to the number of words specified, and linebreaks converts the output into
            HTML line breaks.-->

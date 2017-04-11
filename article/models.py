@@ -11,6 +11,9 @@ class PublishedManager(models.Manager):
 
 
 class Post(models.Model):
+    """
+    文章模型
+    """
     STATUS_CHOICES = (
         ('draft', 'Draft'),
         ('published', 'Published')
@@ -44,3 +47,23 @@ class Post(models.Model):
             self.publish_time.strftime('%m'),
             self.publish_time.strftime('%d'),
             self.slug])
+
+
+class Comment(models.Model):
+    """
+    评论模型
+    """
+    # 定义related_name属性为comments，可以post.comments.all()访问文章的所有评论，默认是post.comment_set.all()
+    post = models.ForeignKey(Post, related_name='comments')
+    name = models.CharField(max_length=80)
+    email = models.EmailField()
+    body = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    active = models.NullBooleanField(default=True)
+
+    class Meta:
+        ordering = ('created', )
+
+    def __str__(self):
+        return 'Comment by {} on {}'.format(self.name, self.post)

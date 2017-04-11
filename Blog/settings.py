@@ -120,3 +120,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# 配置发送邮件服务
+
+EMAIL_HOST = "smtp.sina.cn"
+EMAIL_PORT = 25
+EMAIL_HOST_USER = "13419516267@sina.cn"
+EMAIL_HOST_PASSWORD = "ssjusher123"
+EMAIL_USE_TLS = False
+EMAIL_FROM = "13419516267@sina.cn"
